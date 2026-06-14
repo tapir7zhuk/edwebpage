@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Форум — Навчальний портал</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">📚 Навчальний портал</a>
+    <div class="header-right">
+      <span id="nav-username"></span>
+      <span class="demo-label">Демонстрація освітнього сайту</span>
+      <a href="/login.html" class="btn" id="btn-login">Увійти</a>
+      <a href="/register.html" class="btn btn-primary" id="btn-register">Реєстрація</a>
+      <button class="btn" id="btn-logout" style="display:none">Вийти</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="forum-wrap">
+    <h2> Загальний форум</h2>
+    <div id="comments-container"></div>
+  </div>
+</main>
+
+<footer>
+  <span>📚 Навчальний портал</span>
+  <span>·</span>
+  <span>Демонстрація освітнього сайту</span>
+</footer>
+
+<script src="/auth.js"></script>
+<script src="/comments.js"></script>
+<script>
+  initComments('general', 'comments-container');
+</script>
+</body>
+</html>
