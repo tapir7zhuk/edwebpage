@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Навчальний портал</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* Адмін панель */
+    .admin-panel {
+      width: 100%;
+      max-width: 660px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      background: #fafafa;
+    }
+    .admin-panel-title {
+      font-size: 0.82rem;
+      font-weight: bold;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+    }
+    .admin-form {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .admin-form input {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      font-family: Arial, sans-serif;
+      flex: 1;
+      min-width: 120px;
+    }
+    .admin-form input:focus { outline: none; border-color: #888; }
+    .admin-sections-list { display: flex; flex-direction: column; gap: 6px; }
+    .admin-section-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      background: #fff;
+    }
+    .admin-section-item.hidden-section { opacity: 0.45; }
+    .admin-section-actions { display: flex; gap: 6px; }
+    .btn-xs { padding: 3px 10px; font-size: 0.78rem; }
+    .btn-danger { border-color: #c00; color: #c00; background: #fff; }
+    .btn-danger:hover { background: #c00; color: #fff; }
+    .admin-link {
+      width: 100%;
+      max-width: 660px;
+      margin-bottom: 16px;
+    }
+    .admin-link a {
+      display: block;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 0.85rem;
+      color: #222;
+      text-decoration: none;
+      text-align: center;
+    }
+    .admin-link a:hover { background: #f4f4f4; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">Навчальний портал</a>
+    <div class="header-right">
+      <span id="nav-username"></span>
+      <span class="demo-label">Демонстрація освітнього сайту</span>
+      <a href="/login.html" class="btn" id="btn-login">Увійти</a>
+      <a href="/register.html" class="btn btn-primary" id="btn-register">Реєстрація</a>
+      <button class="btn" id="btn-logout" style="display:none">Вийти</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <p class="page-title">Оберіть формат навчання</p>
+  <p class="page-sub">Відео, документ або стаття — усі матеріали в одному місці</p>
+
+  <!-- Адмін: посилання на панель -->
+  <div class="admin-link" id="admin-link" style="display:none">
+    <a href="/admin.html">Панель адміністратора →</a>
+  </div>
+
+  <!-- Адмін: керування розділами -->
+  <div class="admin-panel" id="admin-panel" style="display:none">
+    <div class="admin-panel-title">Керування розділами</div>
+    <div class="admin-form">
+      <input type="text" id="new-title" placeholder="Назва">
+      <input type="text" id="new-desc" placeholder="Опис">
+      <input type="text" id="new-link" placeholder="/video.html">
+      <button class="btn btn-primary btn-xs" onclick="addSection()">Додати</button>
+    </div>
+    <div class="admin-sections-list" id="admin-sections-list"></div>
+  </div>
+
+  <!-- Динамічні картки -->
+  <div class="cards" id="cards-grid">
+    <span style="color:#aaa;font-size:0.9rem">Завантаження...</span>
+  </div>
+
+  <a href="/forum.html" class="forum-link">
+    <div class="forum-link-left">
+      <div>
+        <div class="forum-link-title">Загальний форум</div>
+        <div class="forum-link-sub">Запитання та обговорення</div>
+      </div>
+    </div>
+    <span>→</span>
+  </a>
+</main>
+
+<footer>
+  <span>Навчальний портал</span>
+  <span>·</span>
+  <span>Демонстрація освітнього сайту</span>
+</footer>
+
+<script src="/auth.js"></script>
+<script>
+  async function loadSections() {
+    const res = await fetch('/api/sections');
+    const sections = await res.json();
+    const grid = document.getElementById('cards-grid');
+
+    if (!sections.length) {
+      grid.innerHTML = '<span style="color:#aaa;font-size:0.9rem">Розділів поки немає</span>';
+      return;
+    }
+
+    grid.innerHTML = sections.map(s => `
+      <a href="/section.html?id=${s.id}" class="card">
+        <div class="card-title">${s.title}</div>
+        <div class="card-desc">${s.description}</div>
+      </a>
+    `).join('');
+  }
+
+  async function loadAdminSections() {
+    const res = await fetch('/api/sections/all');
+    if (!res.ok) return;
+    const sections = await res.json();
+    const list = document.getElementById('admin-sections-list');
+    list.innerHTML = sections.map(s => `
+      <div class="admin-section-item ${s.active ? '' : 'hidden-section'}">
+        <span>${s.title} <span style="color:#aaa">${s.link}</span></span>
+        <div class="admin-section-actions">
+          <button class="btn btn-xs" onclick="openEditSection(${s.id}, '${s.title.replace(/'/g, "\\'")}', '${s.description.replace(/'/g, "\\'")}')">Редагувати</button>
+          <button class="btn btn-xs" onclick="toggleSection(${s.id}, ${s.active})">
+            ${s.active ? 'Приховати' : 'Показати'}
+          </button>
+          <button class="btn btn-danger btn-xs" onclick="deleteSection(${s.id})">Видалити</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Відкрити форму редагування (inline в адмін-панелі)
+  function openEditSection(id, title, desc) {
+    const existing = document.getElementById('inline-edit-form');
+    if (existing) existing.remove();
+
+    const form = document.createElement('div');
+    form.id = 'inline-edit-form';
+    form.style.cssText = 'border:1px solid #ccc;border-radius:8px;padding:14px 16px;margin-top:10px;background:#fff;';
+    form.innerHTML = `
+      <div style="font-size:0.78rem;color:#888;margin-bottom:8px;font-weight:bold;text-transform:uppercase;letter-spacing:0.5px">Редагування картки</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+        <input id="ei-title" type="text" value="${title}" placeholder="Назва"
+          style="flex:1;min-width:120px;border:1px solid #ccc;border-radius:6px;padding:6px 10px;font-size:0.85rem;font-family:Arial,sans-serif">
+        <textarea id="ei-desc" placeholder="Опис"
+          style="flex:1;min-width:180px;border:1px solid #ccc;border-radius:6px;padding:6px 10px;font-size:0.85rem;font-family:Arial,sans-serif;resize:vertical;min-height:48px">${desc}</textarea>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-primary btn-xs" onclick="saveEditSection(${id})">Зберегти</button>
+        <button class="btn btn-xs" onclick="document.getElementById('inline-edit-form').remove()">Скасувати</button>
+        <span id="ei-status" style="font-size:0.8rem;color:#080"></span>
+      </div>
+    `;
+
+    document.getElementById('admin-sections-list').after(form);
+    document.getElementById('ei-title').focus();
+  }
+
+  async function saveEditSection(id) {
+    const title = document.getElementById('ei-title').value.trim();
+    const desc  = document.getElementById('ei-desc').value.trim();
+    if (!title || !desc) return alert('Заповніть назву та опис');
+
+    const res = await fetch(`/api/sections/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, description: desc })
+    });
+
+    if (res.ok) {
+      document.getElementById('ei-status').textContent = '✓ Збережено';
+      setTimeout(() => {
+        const f = document.getElementById('inline-edit-form');
+        if (f) f.remove();
+      }, 1000);
+      loadSections();
+      loadAdminSections();
+    }
+  }
+
+  async function addSection() {
+    const title = document.getElementById('new-title').value.trim();
+    const desc = document.getElementById('new-desc').value.trim();
+    const link = document.getElementById('new-link').value.trim();
+    if (!title || !desc || !link) return alert('Заповніть всі поля');
+
+    await fetch('/api/sections', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, description: desc, link })
+    });
+
+    document.getElementById('new-title').value = '';
+    document.getElementById('new-desc').value = '';
+    document.getElementById('new-link').value = '';
+    loadSections();
+    loadAdminSections();
+  }
+
+  async function toggleSection(id, active) {
+    await fetch(`/api/sections/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ active: !active })
+    });
+    loadSections();
+    loadAdminSections();
+  }
+
+  async function deleteSection(id) {
+    if (!confirm('Видалити розділ?')) return;
+    await fetch(`/api/sections/${id}`, { method: 'DELETE' });
+    loadSections();
+    loadAdminSections();
+  }
+
+  // Показуємо адмін елементи якщо є права
+  window.onUserLoaded = function(user) {
+    if (user.role === 'admin') {
+      document.getElementById('admin-panel').style.display = 'block';
+      document.getElementById('admin-link').style.display = 'block';
+      loadAdminSections();
+    }
+  };
+
+  loadSections();
+</script>
+</body>
+</html>

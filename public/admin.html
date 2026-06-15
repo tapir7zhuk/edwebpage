@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Адмін — Навчальний портал</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .admin-wrap { width: 100%; max-width: 900px; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 4px; border-bottom: 1px solid #ddd; margin-bottom: 24px; }
+    .tab-btn {
+      padding: 8px 18px; font-size: 0.88rem; font-family: Arial, sans-serif;
+      background: none; border: none; border-bottom: 2px solid transparent;
+      cursor: pointer; color: #666; margin-bottom: -1px;
+    }
+    .tab-btn.active { color: #222; border-bottom-color: #222; font-weight: bold; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Stats */
+    .stats-grid { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+    .stat-card {
+      border: 1px solid #ddd; border-radius: 8px; padding: 16px 24px;
+      min-width: 140px; text-align: center;
+    }
+    .stat-value { font-size: 2rem; font-weight: bold; }
+    .stat-label { font-size: 0.8rem; color: #888; margin-top: 4px; }
+
+    /* Chart */
+    .chart-wrap { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 28px; }
+    .chart-title { font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; color: #555; }
+    .chart-bars { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
+    .chart-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+    .chart-bar { width: 100%; background: #222; border-radius: 3px 3px 0 0; min-height: 2px; }
+    .chart-hour { font-size: 0.65rem; color: #aaa; }
+
+    /* Table */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .data-table th { text-align: left; padding: 8px 12px; border-bottom: 2px solid #ddd; font-size: 0.78rem; color: #555; }
+    .data-table td { padding: 8px 12px; border-bottom: 1px solid #eee; }
+    .data-table tr:hover td { background: #fafafa; }
+    .role-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 100px;
+      font-size: 0.75rem; font-weight: bold;
+    }
+    .role-admin { background: #222; color: #fff; }
+    .role-user { background: #eee; color: #555; }
+
+    /* User selector */
+    .user-select-row { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+    .user-select-row select {
+      border: 1px solid #ccc; border-radius: 6px; padding: 6px 10px;
+      font-size: 0.85rem; font-family: Arial, sans-serif; flex: 1; max-width: 300px;
+    }
+    .action-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 0.75rem; background: #f4f4f4; color: #555;
+    }
+    .section-table-wrap { overflow-x: auto; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">Навчальний портал</a>
+    <div class="header-right">
+      <span id="nav-username"></span>
+      <span class="demo-label">Панель адміністратора</span>
+      <a href="/" class="btn">← Головна</a>
+      <button class="btn" id="btn-logout" style="display:none">Вийти</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="admin-wrap" id="admin-wrap" style="display:none">
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('stats')">Статистика</button>
+      <button class="tab-btn" onclick="switchTab('users')">Користувачі</button>
+      <button class="tab-btn" onclick="switchTab('activity')">Активність</button>
+      <button class="tab-btn" onclick="switchTab('upload')">Завантаження</button>
+      <button class="tab-btn" onclick="switchTab('templates')">Шаблони</button>
+    </div>
+
+    <!-- Статистика -->
+    <div class="tab-panel active" id="tab-stats">
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card"><div class="stat-value" id="stat-users">—</div><div class="stat-label">Користувачів</div></div>
+        <div class="stat-card"><div class="stat-value" id="stat-admins">—</div><div class="stat-label">Адміністраторів</div></div>
+        <div class="stat-card"><div class="stat-value" id="stat-comments">—</div><div class="stat-label">Коментарів</div></div>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-title">Активність за годинами (останні 7 днів)</div>
+        <div class="chart-bars" id="chart-bars">
+          <span style="color:#aaa;font-size:0.85rem">Завантаження...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Користувачі -->
+    <div class="tab-panel" id="tab-users">
+      <div class="section-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Ім'я</th>
+              <th>Email</th>
+              <th>Роль</th>
+              <th>Зареєстрований</th>
+              <th>Дія</th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody">
+            <tr><td colspan="6" style="color:#aaa">Завантаження...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Активність -->
+    <div class="tab-panel" id="tab-activity">
+      <div class="user-select-row">
+        <select id="user-filter" onchange="loadActivity()">
+          <option value="">Всі користувачі</option>
+        </select>
+      </div>
+      <div class="section-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Час</th>
+              <th>Користувач</th>
+              <th>Дія</th>
+              <th>Деталі</th>
+            </tr>
+          </thead>
+          <tbody id="activity-tbody">
+            <tr><td colspan="4" style="color:#aaa">Завантаження...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Завантаження -->
+    <div class="tab-panel" id="tab-upload">
+      <p style="font-size:0.88rem;color:#666;margin-bottom:20px">
+        Завантажте файл і одразу зареєструйте його як матеріал у розділі.
+      </p>
+
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:500px">
+
+        <div>
+          <label style="font-size:0.82rem;color:#555;display:block;margin-bottom:4px">Тип матеріалу</label>
+          <select id="up-type" onchange="onUpTypeChange()" style="border:1px solid #ccc;border-radius:6px;padding:6px 10px;font-size:0.85rem;font-family:Arial,sans-serif;width:100%">
+            <option value="video">Відео (.mp4, .webm, .mov)</option>
+            <option value="pdf">PDF (.pdf)</option>
+            <option value="article">Стаття (.html)</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size:0.82rem;color:#555;display:block;margin-bottom:4px">Файл</label>
+          <input type="file" id="up-file" style="font-size:0.85rem;width:100%">
+        </div>
+
+        <div>
+          <label style="font-size:0.82rem;color:#555;display:block;margin-bottom:4px">Розділ</label>
+          <select id="up-section" style="border:1px solid #ccc;border-radius:6px;padding:6px 10px;font-size:0.85rem;font-family:Arial,sans-serif;width:100%">
+            <option value="">Завантаження...</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size:0.82rem;color:#555;display:block;margin-bottom:4px">Назва матеріалу</label>
+          <input type="text" id="up-title" placeholder="Назва" style="border:1px solid #ccc;border-radius:6px;padding:6px 10px;font-size:0.85rem;font-family:Arial,sans-serif;width:100%">
+        </div>
+
+        <div>
+          <label style="font-size:0.82rem;color:#555;display:block;margin-bottom:4px">Опис</label>
+          <input type="text" id="up-desc" placeholder="Короткий опис" style="border:1px solid #ccc;border-radius:6px;padding:6px 10px;font-size:0.85rem;font-family:Arial,sans-serif;width:100%">
+        </div>
+
+        <div>
+          <button class="btn btn-primary" onclick="uploadFile()">Завантажити і додати</button>
+          <span id="up-status" style="font-size:0.85rem;margin-left:10px"></span>
+        </div>
+
+        <div id="up-progress" style="display:none">
+          <div style="height:4px;background:#eee;border-radius:2px;overflow:hidden">
+            <div id="up-bar" style="height:100%;background:#222;width:0%;transition:width 0.2s"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Шаблони -->
+    <div class="tab-panel" id="tab-templates">
+      <p style="font-size:0.88rem;color:#666;margin-bottom:20px">
+        Трафарет для нової сторінки контенту. Замість <code style="background:#f4f4f4;padding:1px 5px;border-radius:3px"><!-- CONTENT --></code> вставте своє відео/PDF/текст.
+      </p>
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+        <button class="btn btn-primary btn-xs" onclick="copyTemplate()">Копіювати</button>
+      </div>
+
+      <textarea id="template-code" style="width:100%;height:480px;border:1px solid #ccc;border-radius:8px;padding:14px;font-family:monospace;font-size:0.8rem;resize:vertical;line-height:1.5" spellcheck="false"></textarea>
+      <div id="copy-status" style="font-size:0.8rem;color:#080;margin-top:6px"></div>
+    </div>
+
+  </div>
+
+  <div id="no-access" style="display:none;color:#c00;font-size:0.95rem">
+    Доступ заборонено. <a href="/">На головну</a>
+  </div>
+</main>
+
+<footer>
+  <span>Навчальний портал</span>
+  <span>·</span>
+  <span>Демонстрація освітнього сайту</span>
+</footer>
+
+<script src="/auth.js"></script>
+<script>
+  const ACTION_LABELS = {
+    login: 'Вхід', logout: 'Вихід', register: 'Реєстрація',
+    change_role: 'Зміна ролі', delete_comment: 'Видалення коментаря'
+  };
+
+  function switchTab(name) {
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', ['stats','users','activity','upload','templates'][i] === name);
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    if (name === 'upload') loadUploadSections();
+    if (name === 'templates') {
+      document.getElementById('template-code').value = UNIVERSAL_TEMPLATE;
+    }
+  }
+
+  async function loadUploadSections() {
+    const res = await fetch('/api/sections/all');
+    if (!res.ok) return;
+    const sections = await res.json();
+    const sel = document.getElementById('up-section');
+    sel.innerHTML = sections.map(s => `<option value="${s.id}">${s.title}</option>`).join('');
+  }
+
+  function onUpTypeChange() {
+    const type = document.getElementById('up-type').value;
+    const accept = { video: '.mp4,.webm,.mov', pdf: '.pdf', article: '.html' };
+    document.getElementById('up-file').accept = accept[type] || '';
+  }
+
+  async function uploadFile() {
+    const type    = document.getElementById('up-type').value;
+    const file    = document.getElementById('up-file').files[0];
+    const section = document.getElementById('up-section').value;
+    const title   = document.getElementById('up-title').value.trim();
+    const desc    = document.getElementById('up-desc').value.trim();
+    const status  = document.getElementById('up-status');
+
+    if (!file)    { status.textContent = 'Оберіть файл'; status.style.color = '#c00'; return; }
+    if (!section) { status.textContent = 'Оберіть розділ'; status.style.color = '#c00'; return; }
+    if (!title)   { status.textContent = 'Введіть назву'; status.style.color = '#c00'; return; }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    status.textContent = 'Завантаження...';
+    status.style.color = '#888';
+    document.getElementById('up-progress').style.display = 'block';
+    document.getElementById('up-bar').style.width = '0%';
+
+    // XMLHttpRequest для прогресу
+    const xhr = new XMLHttpRequest();
+    xhr.upload.onprogress = e => {
+      if (e.lengthComputable) {
+        document.getElementById('up-bar').style.width = Math.round(e.loaded / e.total * 100) + '%';
+      }
+    };
+
+    xhr.onload = async () => {
+      if (xhr.status !== 200) {
+        status.textContent = 'Помилка завантаження';
+        status.style.color = '#c00';
+        return;
+      }
+      const data = JSON.parse(xhr.responseText);
+
+      // Реєструємо як матеріал
+      const res = await fetch('/api/materials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ section_id: section, title, description: desc || title, type, filename: data.filename })
+      });
+
+      if (res.ok) {
+        status.textContent = 'Готово!';
+        status.style.color = '#080';
+        document.getElementById('up-file').value  = '';
+        document.getElementById('up-title').value = '';
+        document.getElementById('up-desc').value  = '';
+        document.getElementById('up-bar').style.width = '100%';
+        setTimeout(() => {
+          document.getElementById('up-progress').style.display = 'none';
+          status.textContent = '';
+        }, 2000);
+      } else {
+        status.textContent = 'Файл завантажено, але матеріал не зареєстровано';
+        status.style.color = '#c00';
+      }
+    };
+
+    xhr.onerror = () => {
+      status.textContent = 'Помилка мережі';
+      status.style.color = '#c00';
+    };
+
+    xhr.open('POST', `/api/upload?type=${type}`);
+    xhr.send(formData);
+  }
+
+  const UNIVERSAL_TEMPLATE = [
+    '<!DOCTYPE html>',
+    '<html lang="uk">',
+    '<head>',
+    '  <meta charset="UTF-8">',
+    '  <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+    '  <title>Навчальний портал</title>',
+    '  <link rel="stylesheet" href="/style.css">',
+    '</head>',
+    '<body>',
+    '',
+    '<header>',
+    '  <div class="header-inner">',
+    '    <a href="/" class="logo">Навчальний портал</a>',
+    '    <div class="header-right">',
+    '      <span id="nav-username"></span>',
+    '      <span class="demo-label">Демонстрація освітнього сайту</span>',
+    '      <a href="/login.html" class="btn" id="btn-login">Увійти</a>',
+    '      <a href="/register.html" class="btn btn-primary" id="btn-register">Реєстрація</a>',
+    '      <button class="btn" id="btn-logout" style="display:none">Вийти</button>',
+    '    </div>',
+    '  </div>',
+    '</header>',
+    '',
+    '<main>',
+    '  <div class="content-wrap">',
+    '    <p class="content-title">Назва сторінки</p>',
+    '',
+    '    <!-- CONTENT -->',
+    '    <!-- Відео: -->',
+    '    <!-- <video controls><source src="/assets/video/ФАЙЛ.mp4" type="video/mp4"></video> -->',
+    '    <!-- PDF: -->',
+    '    <!-- <iframe class="pdf-frame" src="/assets/pdf/ФАЙЛ.pdf"></iframe> -->',
+    '    <!-- Стаття: -->',
+    '    <!-- <div class="article-body"><h2>Заголовок</h2><p>Текст...</p></div> -->',
+    '    <!-- /CONTENT -->',
+    '',
+    '    <div class="comments">',
+    '      <p class="comments-title">Коментарі</p>',
+    '      <div id="comments-container"></div>',
+    '    </div>',
+    '  </div>',
+    '</main>',
+    '',
+    '<footer>',
+    '  <span>Навчальний портал</span>',
+    '  <span>·</span>',
+    '  <span>Демонстрація освітнього сайту</span>',
+    '</footer>',
+    '',
+    '<script src="/auth.js"><\/script>',
+    '<script src="/comments.js"><\/script>',
+    '<script>',
+    "  initComments('назва-секції', 'comments-container');",
+    '<\/script>',
+    '</body>',
+    '</html>'
+  ].join('\n');
+
+  function copyTemplate() {
+    const ta = document.getElementById('template-code');
+    navigator.clipboard.writeText(ta.value).then(() => {
+      const s = document.getElementById('copy-status');
+      s.textContent = 'Скопійовано!';
+      setTimeout(() => s.textContent = '', 2000);
+    });
+  }
+
+  async function loadStats() {
+    const res = await fetch('/api/auth/stats');
+    const data = await res.json();
+
+    document.getElementById('stat-users').textContent = data.users;
+    document.getElementById('stat-admins').textContent = data.admins;
+
+    // Коментарі
+    const cr = await fetch('/api/forum/general');
+    const comments = await cr.json();
+    let total = comments.length;
+    comments.forEach(c => total += c.replies.length);
+    document.getElementById('stat-comments').textContent = total;
+
+    // Графік
+    const hours = Array.from({length: 24}, (_, i) => String(i).padStart(2, '0'));
+    const byHour = {};
+    data.activityByHour.forEach(r => byHour[r.hour] = r.count);
+    const max = Math.max(...hours.map(h => byHour[h] || 0), 1);
+
+    document.getElementById('chart-bars').innerHTML = hours.map(h => `
+      <div class="chart-bar-wrap">
+        <div class="chart-bar" style="height:${Math.round(((byHour[h]||0)/max)*72)}px"
+             title="${byHour[h]||0} дій о ${h}:00"></div>
+        <div class="chart-hour">${h}</div>
+      </div>
+    `).join('');
+  }
+
+  async function loadUsers() {
+    const res = await fetch('/api/auth/users');
+    const users = await res.json();
+
+    // Заповнюємо фільтр активності
+    const sel = document.getElementById('user-filter');
+    sel.innerHTML = '<option value="">Всі користувачі</option>' +
+      users.map(u => `<option value="${u.id}">${u.username}</option>`).join('');
+
+    document.getElementById('users-tbody').innerHTML = users.map(u => `
+      <tr>
+        <td>${u.id}</td>
+        <td>${u.username}</td>
+        <td>${u.email}</td>
+        <td><span class="role-badge role-${u.role}">${u.role === 'admin' ? 'Адмін' : 'Юзер'}</span></td>
+        <td>${u.created_at.slice(0,16)}</td>
+        <td>
+          ${u.role === 'user'
+            ? `<button class="btn btn-xs" onclick="changeRole(${u.id},'admin')">→ Адмін</button>`
+            : `<button class="btn btn-xs" onclick="changeRole(${u.id},'user')">→ Юзер</button>`
+          }
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  async function changeRole(id, role) {
+    if (!confirm(`Змінити роль на "${role}"?`)) return;
+    await fetch(`/api/auth/users/${id}/role`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ role })
+    });
+    loadUsers();
+  }
+
+  async function loadActivity() {
+    const userId = document.getElementById('user-filter').value;
+    const url = '/api/auth/activity' + (userId ? `?userId=${userId}` : '');
+    const res = await fetch(url);
+    const logs = await res.json();
+
+    document.getElementById('activity-tbody').innerHTML = logs.length
+      ? logs.map(l => `
+        <tr>
+          <td>${l.created_at.slice(0,16)}</td>
+          <td>${l.username}</td>
+          <td><span class="action-badge">${ACTION_LABELS[l.action] || l.action}</span></td>
+          <td style="color:#aaa">${l.details || '—'}</td>
+        </tr>
+      `).join('')
+      : '<tr><td colspan="4" style="color:#aaa">Немає записів</td></tr>';
+  }
+
+  window.onUserLoaded = function(user) {
+    if (user.role !== 'admin') {
+      document.getElementById('no-access').style.display = 'block';
+      return;
+    }
+    document.getElementById('admin-wrap').style.display = 'block';
+    loadStats();
+    loadUsers();
+    loadActivity();
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+[Docker контейнер]
+  ├── Node.js + Express  ← сервер + API для коментарів
+  ├── SQLite  ← вся база (контент + коментарі)
+  └── Static files  ← HTML/CSS/JS сайт
+
+[Cloudflare Tunnel]  ← публічне посилання → твій контейнер
+
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS D:\семестр 7 2025\Переддипломна практика\mysite> tree /F
+Folder PATH listing
+Volume serial number is 000000C9 33B6:D540
+D:.
+│   db.js
+│   docker-compose.yml
+│   Dockerfile
+│   package.json
+│   server.js
+│
+├───assets
+│   │   article.html
+│   │
+│   ├───pdf
+│   │       king in yellow.pdf
+│   │
+│   └───video
+│           Демонстрація курсового проєкту.mp4
+│
+├───data
+│       database.db
+│
+├───public
+│       admin.html
+│       article.html
+│       auth.js
+│       comments.js
+│       forum.html
+│       index.html
+│       login.html
+│       pdf.html
+│       register.html
+│       style.css
+│       video.html
+│
+└───routes
+        auth.js
+        content.js
+        forum.js
+        materials.js
+        sections.js
+cloudflared tunnel --url http://localhost:3000
+
