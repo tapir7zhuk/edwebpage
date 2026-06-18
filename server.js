@@ -22,8 +22,15 @@ app.use('/api/content',   require('./routes/content'));
 app.use('/api/forum',     require('./routes/forum'));
 app.use('/api/sections',  require('./routes/sections'));
 app.use('/api/materials', require('./routes/materials'));
+<<<<<<< HEAD
 app.use('/api/upload',    require('./routes/upload'));
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+=======
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d

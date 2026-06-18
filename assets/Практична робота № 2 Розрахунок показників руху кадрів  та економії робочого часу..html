@@ -1,0 +1,331 @@
+<div class="entry-content">
+    <style>
+        /* Стилі для гарного відображення вмісту сторінки */
+        .entry-content {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f4f4;
+            font-weight: bold;
+            text-align: center;
+        }
+        td:not(:first-child) {
+            text-align: center;
+        }
+        .formula-block {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: "Courier New", Courier, monospace;
+        }
+        .formula {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .formula-fraction {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0 5px;
+        }
+        .fraction-top {
+            border-bottom: 1px solid #333;
+            padding-bottom: 2px;
+        }
+        .fraction-bottom {
+            padding-top: 2px;
+        }
+        .variables {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            margin-left: 20px;
+        }
+    </style>
+
+    <h1>Практична робота № 2. Розрахунок показників руху кадрів та економії робочого часу</h1>
+    
+    <p><strong>Мета:</strong> набуття практичних навичок з розрахунку показників руху кадрів на підприємстві та визначення економії робочого часу і можливого додаткового випуску продукції у результаті усунення плинності працівників.</p>
+    
+    <h2>План роботи</h2>
+    <ol>
+        <li>Ознайомитися з опорними поняттями з теми.</li>
+        <li>За даними таблиці 2.1 розрахувати економію робочого часу і можливий додатковий випуск продукції у результаті усунення плинності.</li>
+        <li>За даними таблиці 2.2 визначити коефіцієнт прийому, вибуття та плинності кадрів.</li>
+    </ol>
+
+    <h2>Опорні поняття</h2>
+    <ul>
+        <li><strong>Персонал підприємства</strong> – це сукупність постійних працівників, що отримали необхідну професійну підготовку та (або) мають досвід практичної діяльності. Окрім постійних працівників, у діяльності підприємства можуть брати участь інші працездатні особи на підставі тимчасового трудового договору (контракту).</li>
+        <li><strong>Продуктивність праці</strong> – це показник ефективності, результативності праці, що характеризується співвідношенням обсягу продукції, робіт чи послуг, з одного боку, та кількістю праці, витраченої на виробництво цього обсягу – з іншого.</li>
+        <li><strong>Коефіцієнт прийому кадрів</strong> визначається як відношення кількості осіб, прийнятих на роботу за певний період, до середньооблікової чисельності штатних працівників за той самий період.</li>
+        <li><strong>Коефіцієнт звільнення (вибуття) працівників</strong> розраховується як відношення кількості звільнених працівників за звітний період до середньооблікової чисельності штатних працівників.</li>
+        <li><strong>Коефіцієнт плинності кадрів</strong> розраховується як відношення кількості звільнених працівників за звітний період за прогули та інші порушення трудової дисципліни, невідповідність зайнятій посаді, а також за власним бажанням (крім поважних причин) до середньооблікової чисельності штатних працівників.</li>
+    </ul>
+
+    <h2>Вихідні дані для виконання практичної роботи № 2</h2>
+    
+    <h3>Таблиця 2.1. Вихідні дані для виконання завдання 2</h3>
+    <table>
+        <thead>
+            <tr>
+                <th rowspan="2">Показник</th>
+                <th colspan="10">Варіант</th>
+            </tr>
+            <tr>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+                <th>7</th>
+                <th>8</th>
+                <th>9</th>
+                <th>10</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Втрати робочого часу через плинність на одного робітника, дні</td>
+                <td>4</td>
+                <td>3</td>
+                <td>2</td>
+                <td>5</td>
+                <td>4</td>
+                <td>3</td>
+                <td>2</td>
+                <td>1</td>
+                <td>6</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>Плинність працівників по підприємству, чол.</td>
+                <td>80</td>
+                <td>75</td>
+                <td>65</td>
+                <td>88</td>
+                <td>89</td>
+                <td>69</td>
+                <td>55</td>
+                <td>40</td>
+                <td>90</td>
+                <td>75</td>
+            </tr>
+            <tr>
+                <td>Плановий виробіток на людино-день, тис. грн.</td>
+                <td>75</td>
+                <td>80</td>
+                <td>85</td>
+                <td>75</td>
+                <td>80</td>
+                <td>85</td>
+                <td>86</td>
+                <td>88</td>
+                <td>79</td>
+                <td>86</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Таблиця 2.2. Показники прийому, вибуття та плинності кадрів підприємства (для завдання 3)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th rowspan="2">Показник</th>
+                <th colspan="10">Варіант</th>
+            </tr>
+            <tr>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+                <th>7</th>
+                <th>8</th>
+                <th>9</th>
+                <th>10</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Середньооблікова чисельність працівників, чол.</td>
+                <td>400</td>
+                <td>450</td>
+                <td>420</td>
+                <td>410</td>
+                <td>350</td>
+                <td>460</td>
+                <td>380</td>
+                <td>390</td>
+                <td>430</td>
+                <td>350</td>
+            </tr>
+            <tr>
+                <td>Прийнято працівників протягом року, чол.</td>
+                <td>30</td>
+                <td>35</td>
+                <td>25</td>
+                <td>20</td>
+                <td>38</td>
+                <td>40</td>
+                <td>36</td>
+                <td>35</td>
+                <td>45</td>
+                <td>28</td>
+            </tr>
+            <tr>
+                <td>Звільнено працівників протягом року, чол.</td>
+                <td>40</td>
+                <td>30</td>
+                <td>20</td>
+                <td>25</td>
+                <td>30</td>
+                <td>35</td>
+                <td>40</td>
+                <td>45</td>
+                <td>40</td>
+                <td>30</td>
+            </tr>
+            <tr style="background-color: #fafafa; font-style: italic;">
+                <td colspan="11">в т.ч.</td>
+            </tr>
+            <tr>
+                <td style="padding-left: 20px;">за порушення трудової дисципліни, чол.</td>
+                <td>10</td>
+                <td>10</td>
+                <td>5</td>
+                <td>8</td>
+                <td>10</td>
+                <td>10</td>
+                <td>20</td>
+                <td>10</td>
+                <td>10</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td style="padding-left: 20px;">за власним бажанням, чол.</td>
+                <td>25</td>
+                <td>15</td>
+                <td>10</td>
+                <td>15</td>
+                <td>15</td>
+                <td>15</td>
+                <td>10</td>
+                <td>25</td>
+                <td>25</td>
+                <td>15</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Методичні вказівки по виконанню практичної роботи № 2</h2>
+    
+    <h3>Завдання 2</h3>
+    
+    <p><strong>1. Економію робочого часу визначимо за формулою:</strong></p>
+    <div class="formula-block">
+        <div class="formula">Е<sub>час</sub> = Ч<sub>зв</sub> × t</div>
+        <div class="variables">
+            де: <br>
+            <strong>Ч<sub>зв</sub></strong> – чисельність звільнених за власним бажанням, за порушення трудової дисципліни та з інших причин, не пов’язаних з виробництвом;<br>
+            <strong>t</strong> – витрати часу у зв’язку з плинністю, днів.
+        </div>
+    </div>
+
+    <p><strong>2. Додатковий випуск продукції у результаті усунення плинності розраховується за формулою:</strong></p>
+    <div class="formula-block">
+        <div class="formula">Q<sub>дод</sub> = Е<sub>час</sub> × В<sub>пл</sub></div>
+        <div class="variables">
+            де: <br>
+            <strong>В<sub>пл</sub></strong> – плановий виробіток на одного працюючого за один людино-день.
+        </div>
+    </div>
+
+    <h3>Завдання 3</h3>
+    
+    <p><strong>1. Коефіцієнт прийому кадрів визначається за формулою:</strong></p>
+    <div class="formula-block">
+        <div class="formula">
+            К<sub>п</sub> = 
+            <div class="formula-fraction">
+                <div class="fraction-top">Ч<sub>п</sub></div>
+                <div class="fraction-bottom">Ч</div>
+            </div>
+            × 100
+        </div>
+        <div class="variables">
+            де: <br>
+            <strong>Ч<sub>п</sub></strong> - чисельність прийнятих на роботу за відповідний період;<br>
+            <strong>Ч</strong> - середньооблікова чисельність працівників у цьому ж періоді.
+        </div>
+    </div>
+
+    <p><strong>2. Коефіцієнт вибуття кадрів визначається за формулою:</strong></p>
+    <div class="formula-block">
+        <div class="formula">
+            К<sub>v</sub> = 
+            <div class="formula-fraction">
+                <div class="fraction-top">Ч<sub>зв.заг.</sub></div>
+                <div class="fraction-bottom">Ч</div>
+            </div>
+            × 100
+        </div>
+        <div class="variables">
+            де: <br>
+            <strong>Ч<sub>зв.заг.</sub></strong> – загальна чисельність звільнених за відповідний період з будь-яких причин.
+        </div>
+    </div>
+
+    <p><strong>3. Коефіцієнт плинності кадрів розраховується за формулою:</strong></p>
+    <div class="formula-block">
+        <div class="formula">
+            К<sub>пл.</sub> = 
+            <div class="formula-fraction">
+                <div class="fraction-top">Ч<sub>вз</sub></div>
+                <div class="fraction-bottom">Ч</div>
+            </div>
+            × 100
+        </div>
+        <div class="variables">
+            де: <br>
+            <strong>Ч<sub>вз</sub></strong> – чисельність звільнених за власним бажанням, за порушення трудової дисципліни або з інших причин, не пов’язаних із виробництвом.
+        </div>
+    </div>
+
+    <div style="clear:both;"></div>
+</div>

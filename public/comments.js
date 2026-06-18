@@ -10,8 +10,11 @@ async function initComments(section, containerId) {
     if (r.ok) currentUser = await r.json();
   } catch {}
 
+<<<<<<< HEAD
   const isAdmin = currentUser && currentUser.role === 'admin';
 
+=======
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
   // ─── Завантаження та відображення ───
   async function load() {
     const res = await fetch(`/api/forum/${section}`);
@@ -48,6 +51,7 @@ async function initComments(section, containerId) {
   }
 
   function renderComment(c, parent) {
+<<<<<<< HEAD
     const isOwner  = currentUser && currentUser.id === c.user_id;
     const isHidden = c.hidden === 1;
 
@@ -77,6 +81,14 @@ async function initComments(section, containerId) {
         </button>` : ''}
         ${(isAdmin || isOwner) ? `<button class="reply-toggle" style="color:#c00" onclick="window._deleteComment(${c.id})">Видалити</button>` : ''}
       </div>
+=======
+    const el = document.createElement('div');
+    el.className = 'comment-block';
+    el.innerHTML = `
+      <div class="comment-meta">${esc(c.username)} · ${formatDate(c.created_at)}</div>
+      <div class="comment-text">${esc(c.text)}</div>
+      ${currentUser ? `<button class="reply-toggle" data-id="${c.id}">↩ Відповісти</button>` : ''}
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
       <div class="reply-form" id="rf-${c.id}">
         <textarea class="reply-textarea" placeholder="Ваша відповідь..."></textarea>
         <button class="btn btn-primary btn-sm" style="font-size:0.8rem;padding:5px 12px" data-reply-to="${c.id}">Надіслати</button>
@@ -89,6 +101,7 @@ async function initComments(section, containerId) {
     // Відповіді (2-й рівень)
     const repContainer = el.querySelector(`#rep-${c.id}`);
     (c.replies || []).forEach(r => {
+<<<<<<< HEAD
       const isReplyOwner  = currentUser && currentUser.id === r.user_id;
       const isReplyHidden = r.hidden === 1;
       const rel = document.createElement('div');
@@ -115,12 +128,23 @@ async function initComments(section, containerId) {
           </button>` : ''}
           ${(isAdmin || isReplyOwner) ? `<button class="reply-toggle" style="color:#c00" onclick="window._deleteComment(${r.id})">Видалити</button>` : ''}
         </div>
+=======
+      const rel = document.createElement('div');
+      rel.className = 'comment-block';
+      rel.innerHTML = `
+        <div class="comment-meta">${esc(r.username)} · ${formatDate(r.created_at)}</div>
+        <div class="comment-text">${esc(r.text)}</div>
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
       `;
       repContainer.appendChild(rel);
     });
 
     // Toggle форми відповіді
+<<<<<<< HEAD
     const toggle = el.querySelector('.reply-toggle[data-id]');
+=======
+    const toggle = el.querySelector('.reply-toggle');
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
     if (toggle) {
       toggle.addEventListener('click', () => {
         const rf = document.getElementById(`rf-${c.id}`);
@@ -135,6 +159,7 @@ async function initComments(section, containerId) {
     }
   }
 
+<<<<<<< HEAD
   // ─── Адмін дії (глобальні щоб onclick працював) ───
   window._editComment = function(id) {
     document.getElementById(`text-${id}`).style.display = 'none';
@@ -172,6 +197,8 @@ async function initComments(section, containerId) {
     if (res.ok) load();
   };
 
+=======
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
   // ─── Відправка головного коментаря ───
   async function submitComment() {
     const textarea = document.getElementById('new-text');
@@ -197,9 +224,15 @@ async function initComments(section, containerId) {
 
   // ─── Відправка відповіді ───
   async function submitReply(parentId, commentEl) {
+<<<<<<< HEAD
     const rf       = commentEl.querySelector('.reply-form');
     const textarea = rf.querySelector('textarea');
     const errEl    = rf.querySelector('.error-msg');
+=======
+    const rf      = commentEl.querySelector('.reply-form');
+    const textarea = rf.querySelector('textarea');
+    const errEl   = rf.querySelector('.error-msg');
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
     const text = textarea.value.trim();
     if (!text) { errEl.textContent = 'Введіть текст'; return; }
     errEl.textContent = '';
@@ -237,4 +270,8 @@ async function initComments(section, containerId) {
   }
 
   load();
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d

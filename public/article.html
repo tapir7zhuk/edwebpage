@@ -10,7 +10,11 @@
 
 <header>
   <div class="header-inner">
+<<<<<<< HEAD
     <a href="/" class="logo">Навчальний портал</a>
+=======
+    <a href="/" class="logo">📚 Навчальний портал</a>
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
     <div class="header-right">
       <span id="nav-username"></span>
       <span class="demo-label">Демонстрація освітнього сайту</span>
@@ -23,21 +27,35 @@
 
 <main>
   <div class="content-wrap">
+<<<<<<< HEAD
     <p class="content-title" id="material-title">Стаття</p>
+=======
+    <p class="content-title"> Стаття</p>
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
 
     <div class="article-body" id="article-body">
       <p style="color:#aaa">Завантаження...</p>
     </div>
 
+<<<<<<< HEAD
     <div class="comments">
       <p class="comments-title">Коментарі</p>
+=======
+    <!-- Коментарі -->
+    <div class="comments">
+      <p class="comments-title"> Коментарі</p>
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
       <div id="comments-container"></div>
     </div>
   </div>
 </main>
 
 <footer>
+<<<<<<< HEAD
   <span>Навчальний портал</span>
+=======
+  <span>📚 Навчальний портал</span>
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
   <span>·</span>
   <span>Демонстрація освітнього сайту</span>
 </footer>
@@ -45,6 +63,7 @@
 <script src="/auth.js"></script>
 <script src="/comments.js"></script>
 <script>
+<<<<<<< HEAD
   const params     = new URLSearchParams(location.search);
   const materialId = params.get('materialId');
 
@@ -68,6 +87,18 @@
   }
 
   loadMaterial();
+=======
+  // Завантаження статті
+  fetch('/api/content/article')
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById('article-body').innerHTML = data.html || '<p>Статтю не знайдено</p>';
+    })
+    .catch(() => {
+      document.getElementById('article-body').textContent = 'Помилка завантаження';
+    });
+
+>>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
   initComments('article', 'comments-container');
 </script>
 </body>

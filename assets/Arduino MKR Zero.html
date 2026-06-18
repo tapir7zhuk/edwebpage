@@ -1,0 +1,141 @@
+<div class="entry-content">
+    <style>
+        /* Стилі для гарного відображення вмісту сторінки про Arduino MKR Zero */
+        .entry-content {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #1a5276;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #d5dbdb;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #ebf5fb;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        td:first-child {
+            font-weight: bold;
+            width: 30%;
+            background-color: #fcfcfc;
+        }
+        .highlight-box {
+            background-color: #f4f6f7;
+            border-left: 4px solid #2980b9;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+
+    <h1>Arduino MKR Zero</h1> [cite: 46]
+    
+    <p><strong>Arduino MKR Zero</strong> — це плата, орієнтована на роботу з мультимедійними проектами, зокрема цифровим аудіо та обробкою даних із SD-карт[cite: 47]. Ця плата належить до лінійки Arduino MKR, до якої входять також MKR WiFi 1010, MKR GSM 1400 та MKR NB 1500[cite: 48]. Відмінність MKR Zero полягає в оптимізації для роботи з аудіо та SD-картами[cite: 48].</p>
+    
+    <p>Вона має високоефективний 32-бітний мікроконтролер, слот для microSD, підтримку Li-Po батарей і USB OTG, що робить її ідеальним вибором для портативних IoT-проектів, таких як музичні плеєри та цифрові диктофони[cite: 48, 49].</p>
+
+    <h2>Основні характеристики Arduino MKR Zero</h2> [cite: 50]
+    <table>
+        <thead>
+            <tr>
+                <th>Характеристика</th>
+                <th>Деталі</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Мікроконтролер</td>
+                <td>Atmel SAMD21G18 (ARM Cortex-M0+, 32-бітний, 48 МГц) [cite: 51]</td>
+            </tr>
+            <tr>
+                <td>Пам'ять</td>
+                <td>256 КБ Flash, 32 КБ SRAM [cite: 51]</td>
+            </tr>
+            <tr>
+                <td>Цифрові входи та виходи</td>
+                <td>22 (12 із підтримкою PWM) [cite: 51]</td>
+            </tr>
+            <tr>
+                <td>Аналогові входи</td>
+                <td>7 [cite: 51]</td>
+            </tr>
+            <tr>
+                <td>Аналоговий вихід</td>
+                <td>1 [cite: 51]</td>
+            </tr>
+            <tr>
+                <td>Інтерфейси</td>
+                <td>SPI, I2C, UART, USB Device/Host (OTG) [cite: 51]</td>
+            </tr>
+            <tr>
+                <td>Слот для microSD</td>
+                <td>Вбудований [cite: 51]</td>
+            </tr>
+            <tr>
+                <td>Живлення</td>
+                <td>Li-Po батарея 3.7В, USB 5В, зовнішнє джерело живлення [cite: 51]</td>
+            </tr>
+            <tr>
+                <td>Робоча напруга</td>
+                <td>3.3В (необхідний конвертер для сигналів 5В) [cite: 51]</td>
+            </tr>
+            <tr>
+                <td>Особливості</td>
+                <td>Відтворення аудіо (формат .WAV), компактний дизайн, підтримка бібліотек [cite: 51]</td>
+            </tr>
+            <tr>
+                <td>Застосування</td>
+                <td>IoT-проекти, аудіоплеєри, логери даних, цифрові диктофони, синтезатори [cite: 51, 52]</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Переваги MKR Zero</h2> [cite: 53]
+    <ul>
+        <li>Ідеально підходить для проектів, що включають відтворення або запис аудіо[cite: 54].</li>
+        <li>Компактний і зручний дизайн для портативних пристроїв[cite: 55].</li>
+        <li>Легка інтеграція з IoT-рішеннями завдяки підтримці USB OTG[cite: 56].</li>
+    </ul>
+
+    <h2>Типові проекти з MKR Zero</h2> [cite: 57]
+    <ul>
+        <li>Музичні плеєри або генератори сигналів[cite: 58].</li>
+        <li>Логери даних для SD-карт із датчиків[cite: 59].</li>
+        <li>IoT-пристрої з мультимедійними функціями[cite: 60].</li>
+        <li>Цифрові диктофони або прості синтезатори звуку[cite: 61].</li>
+    </ul>
+
+    <div class="highlight-box">
+        <h3>Що таке IoT (Інтернет речей)?</h3>
+        <p><strong>IoT (інтернет штук з англійської)</strong> — це концепція, яка дозволяє фізичним об'єктам та пристроям підключатися до Інтернету, збирати та обмінюватися даними без прямої участі людини[cite: 62].</p>
+        <p>В рамках IoT, "речі" можуть бути будь-якими пристроями, обладнанням або сенсорами, що мають здатність передавати інформацію через мережі зв'язку, такі як Wi-Fi, Bluetooth або 5G[cite: 63]. Ці технології використовуються в різних сферах, включаючи розумні будинки (де пристрої автоматично регулюють температуру чи освітлення), а також у промисловості, медицині та сільському господарстві для моніторингу та аналізу даних в реальному часі[cite: 64]. IoT дозволяє створювати інтегровані системи, які покращують ефективність і зручність у повсякденному житті та бізнесі[cite: 65].</p>
+    </div>
+
+    <div style="clear:both;"></div>
+</div>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Реєстрація — Навчальний портал</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">📚 Навчальний портал</a>
+    <div class="header-right">
+      <span class="demo-label">Демонстрація освітнього сайту</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="form-wrap">
+    <h2>Реєстрація</h2>
+
+    <div class="form-group">
+      <label for="username">Ім'я користувача</label>
+      <input type="text" id="username" placeholder="username">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="you@example.com">
+    </div>
+
+    <div class="form-group">
+      <label for="password">Пароль <span style="color:#aaa;font-size:0.78rem">(мін. 6 символів)</span></label>
+      <input type="password" id="password" placeholder="••••••">
+    </div>
+
+    <div class="error-msg" id="err"></div>
+
+    <button class="btn btn-primary" style="width:100%;margin-top:6px" id="submit-btn">Зареєструватись</button>
+
+    <p class="form-footer">Вже є акаунт? <a href="/login.html">Увійти</a></p>
+  </div>
+</main>
+
+<footer>
+  <span>📚 Навчальний портал</span>
+  <span>·</span>
+  <span>Демонстрація освітнього сайту</span>
+</footer>
+
+<script>
+  document.getElementById('submit-btn').addEventListener('click', async () => {
+    const username = document.getElementById('username').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const errEl    = document.getElementById('err');
+    errEl.textContent = '';
+
+    if (!username || !email || !password) {
+      errEl.textContent = 'Заповніть усі поля';
+      return;
+    }
+
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, email, password })
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      location.href = '/';
+    } else {
+      errEl.textContent = data.error || 'Помилка реєстрації';
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('submit-btn').click();
+  });
+</script>
+</body>
+</html>
