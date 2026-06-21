@@ -5,12 +5,7 @@
     "express": "^4.18.2",
     "better-sqlite3": "^9.4.3",
     "bcryptjs": "^2.4.3",
-<<<<<<< HEAD
     "express-session": "^1.17.3",
     "multer": "1.4.5-lts.1"
-
-=======
-    "express-session": "^1.17.3"
->>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
   }
 }

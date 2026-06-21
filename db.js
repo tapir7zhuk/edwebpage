@@ -40,16 +40,11 @@ db.exec(`
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     section_id  INTEGER NOT NULL,
     title       TEXT    NOT NULL,
-<<<<<<< HEAD
     description TEXT    NOT NULL DEFAULT '',
     type        TEXT    NOT NULL,
     filename    TEXT    NOT NULL,
     active      INTEGER NOT NULL DEFAULT 1,
     sort_order  INTEGER NOT NULL DEFAULT 0,
-=======
-    type        TEXT    NOT NULL,
-    filename    TEXT    NOT NULL,
->>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
     created_at  TEXT    DEFAULT (datetime('now')),
     FOREIGN KEY (section_id) REFERENCES sections(id)
   );
@@ -90,7 +85,6 @@ if (!sectionsExist) {
 }
 
 module.exports = db;
-<<<<<<< HEAD
 
 // Міграції — додаємо нові колонки якщо їх ще немає
 const materialCols = db.prepare('PRAGMA table_info(materials)').all().map(c => c.name);
@@ -106,5 +100,9 @@ if (!materialCols.includes('sort_order')) {
   db.exec('ALTER TABLE materials ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0');
   console.log('Migration: added materials.sort_order');
 }
-=======
->>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
+
+const commentCols = db.prepare('PRAGMA table_info(comments)').all().map(c => c.name);
+if (!commentCols.includes('hidden')) {
+  db.exec('ALTER TABLE comments ADD COLUMN hidden INTEGER NOT NULL DEFAULT 0');
+  console.log('Migration: added comments.hidden');
+}

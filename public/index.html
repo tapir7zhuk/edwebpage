@@ -145,11 +145,7 @@
     }
 
     grid.innerHTML = sections.map(s => `
-<<<<<<< HEAD
       <a href="/section.html?id=${s.id}" class="card">
-=======
-      <a href="${s.link}" class="card">
->>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
         <div class="card-title">${s.title}</div>
         <div class="card-desc">${s.description}</div>
       </a>
@@ -165,10 +161,7 @@
       <div class="admin-section-item ${s.active ? '' : 'hidden-section'}">
         <span>${s.title} <span style="color:#aaa">${s.link}</span></span>
         <div class="admin-section-actions">
-<<<<<<< HEAD
           <button class="btn btn-xs" onclick="openEditSection(${s.id}, '${s.title.replace(/'/g, "\\'")}', '${s.description.replace(/'/g, "\\'")}')">Редагувати</button>
-=======
->>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
           <button class="btn btn-xs" onclick="toggleSection(${s.id}, ${s.active})">
             ${s.active ? 'Приховати' : 'Показати'}
           </button>
@@ -178,7 +171,6 @@
     `).join('');
   }
 
-<<<<<<< HEAD
   // Відкрити форму редагування (inline в адмін-панелі)
   function openEditSection(id, title, desc) {
     const existing = document.getElementById('inline-edit-form');
@@ -228,8 +220,6 @@
     }
   }
 
-=======
->>>>>>> 993fc6f3d7613a6f5db0a18d707bf2a5bd7c4f4d
   async function addSection() {
     const title = document.getElementById('new-title').value.trim();
     const desc = document.getElementById('new-desc').value.trim();
